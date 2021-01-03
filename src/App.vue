@@ -1,6 +1,14 @@
 <template>
   <div id="app" class="contain">
-    <section>
+    <GamestateStart v-if="uiState === 'start'">
+      <h2>Which hooman do you want to be?</h2>
+
+      <p v-for="option in characterChoices" :key="option" class="character-choices">
+        <input v-model="characterinput" :id="option" :value="option" type="radio" />
+        <label :for="option">{{ option }}</label>
+      </p>
+    </GamestateStart>
+    <section v-else>
       <svg viewBox="0 -180 1628 1180" class="main">
         <defs>
           <clipPath id="bottom-clip">
@@ -56,10 +64,19 @@
 
 <script>
 import { mapState } from "vuex";
+import GamestateStart from "@/components/GamestateStart.vue";
 
 export default {
+  components: {
+    GamestateStart,
+  },
+  data() {
+    return {
+      characterinput: "",
+    };
+  },
   computed: {
-    ...mapState(["uiState", "questions"]),
+    ...mapState(["uiState", "questions", "characterChoices", "character"]),
   },
 };
 </script>
@@ -117,6 +134,7 @@ svg.main,
 
 .character-choices {
   margin: 5px 0;
+  font-weight: 200;
 }
 
 .friendtalk {
