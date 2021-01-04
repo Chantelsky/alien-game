@@ -29,9 +29,7 @@
         <Friend />
         <Score />
 
-        <component :is="character">
-          
-        </component>
+        <component :is="character"></component>
         <text
           x="1000"
           y="930"
@@ -66,6 +64,16 @@
           />
         </g>
       </svg>
+      <div class="friendtalk">
+        <h3>{{ questions[questionIndex].question }}</h3>
+      </div>
+      <div class="zombietalk">
+        <p v-for="character in characterChoices" :key="character">
+          <button @click="pickQuestion(character)">
+            {{ questions[questionIndex][character] }}
+          </button>
+        </p>
+      </div>
     </section>
   </div>
 </template>
@@ -87,6 +95,7 @@ export default {
     Baker,
     Mechanic,
     Score,
+    Friend,
     Zombie,
   },
   data() {
@@ -95,12 +104,22 @@ export default {
     };
   },
   computed: {
-    ...mapState(["uiState", "questions", "characterChoices", "character"]),
+    ...mapState([
+      "uiState",
+      "questions",
+      "characterChoices",
+      "character",
+      "questionIndex",
+    ]),
   },
   methods: {
     pickCharacter() {
       this.$store.commit("pickCharacter", this.characterinput);
       this.$store.commit("updateUIState", "characterChosen");
+    },
+    pickQuestion(character) {
+      console.log(character);
+      this.$store.commit("pickQuestion", character);
     },
   },
 };
